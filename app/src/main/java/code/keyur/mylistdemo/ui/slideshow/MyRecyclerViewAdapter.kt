@@ -15,6 +15,8 @@ import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import code.keyur.mylistdemo.R
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 
 
 /**
@@ -27,9 +29,10 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
 
     private val TAG = MyRecyclerViewAdapter::class.java.simpleName
     private val data = mutableListOf<Record>()
+    private var lastPosition = -1
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgThumb = itemView.findViewById<ImageView>(R.id.imgThumb)
+//        val imgThumb = itemView.findViewById<ImageView>(R.id.imgThumb)
         val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
         val txtDesc = itemView.findViewById<TextView>(R.id.txtDesc)
         val toggleButtonLike = itemView.findViewById<ToggleButton>(R.id.toggleButtonLike)
@@ -102,6 +105,7 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bindView(position)
+        setAnimation(holder.itemView, position)
     }
 
     override fun getItemCount(): Int {
@@ -116,4 +120,28 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
         }
         notifyDataSetChanged()
     }
+
+    override fun onViewDetachedFromWindow(holder: MyViewHolder) {
+//        super.onViewDetachedFromWindow(holder)
+        clearAnimation(holder.itemView)
+    }
+
+    /**
+     * Here is the key method to apply the animation
+     */
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            val animation: Animation =
+                AnimationUtils.loadAnimation(viewToAnimate.context, R.anim.item_animation_fall_down)
+            animation.duration = 350
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
+        }
+    }
+
+    fun clearAnimation(mRootLayout: View) {
+        mRootLayout.clearAnimation()
+    }
+
 }

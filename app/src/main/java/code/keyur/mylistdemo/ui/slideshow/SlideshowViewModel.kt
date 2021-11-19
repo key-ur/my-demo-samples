@@ -58,7 +58,7 @@ class SlideshowViewModel(application: Application) : AndroidViewModel(applicatio
             val queue = Volley.newRequestQueue(_context)
 
             val url =
-                "https://api.data.gov.in/resource/de59e770-2333-4eaf-9088-a3643de040c8?api-key=${myApiKey}&format=json&offset=0&limit=20"
+                "https://api.data.gov.in/resource/de59e770-2333-4eaf-9088-a3643de040c8?api-key=${myApiKey}&format=json&offset=0&limit=40"
             val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
                 run {
                     Log.d(TAG, "fetchDataFromServer: $response")

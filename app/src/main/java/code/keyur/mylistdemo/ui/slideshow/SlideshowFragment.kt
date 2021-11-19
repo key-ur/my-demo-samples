@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -59,7 +60,10 @@ class SlideshowFragment : Fragment() {
 
     private fun initViews(view: View) {
         _binding?.recyclerView?.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+//        val animation =
+//            AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_fall_down)
+//        _binding?.recyclerView?.layoutAnimation = animation
     }
 
     private fun setObservers() {
