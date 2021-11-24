@@ -12,54 +12,70 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="5dp">
-
+        android:gravity="center_vertical">
         <LinearLayout
-            android:id="@+id/linearTitleDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
+            android:id="@+id/linearButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:background="@color/purple_200"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:background="@color/teal_200"
+                android:gravity="center"
+                android:padding="4dp">
 
-                <TextView
-                    android:id="@+id/txtTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="TextView"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@color/purple_700" />
-
-                <ToggleButton
-                    android:id="@+id/toggleButtonLike"
+                <ImageView
+                    android:id="@+id/imageLike"
+                    style="@style/toggleButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:background="@null"
-                    android:checked="false"
-                    android:rotationX="1"
-                    android:textOff=""
-                    android:textOn="" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_gravity="right"
+                    android:background="@drawable/ic_toggle_bg" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Map" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/linearButtons"
+            android:layout_toLeftOf="@+id/linearButtons"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtDesc"
-                android:layout_width="match_parent"
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="TextView"
-                android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle" />
+                android:padding="4dp"
+                android:text="a;sldfkjaslfkajslfkasjdfl "
+                android:textAppearance="@style/TextAppearance.AppCompat.Menu"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="4"
+                android:padding="4dp"
+                android:scrollbars="vertical"
+                android:text="alsfjaslfas flasdkksjdf hsfkjsf slkdfjs fksdjf askdfj sdfkljs dflkasdfj asdflkjsa dflsakdfj lsdkfj jf"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
         </LinearLayout>
 
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ShapeAppearanceOverlay.App.SelectedCornerRounded" parent="">
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.RightTopBottomLeftCornerRounded" parent="">
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="android:colorEdgeEffect">@color/black</item>
+    </style>
+
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/ic_toggle_bg</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+    <style name="toggleButton"  parent="android:Theme.Black">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+    </style>
+
+    <style name="MyCardView" parent="Base.CardView">
+        <item name="cardCornerRadius">7dp</item>
+        <item name="background">@color/purple_200</item>
+    </style>
+
+</resources>

@@ -4,19 +4,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.core.content.ContextCompat
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextUtils
+import android.text.style.BackgroundColorSpan
 import androidx.core.content.res.ResourcesCompat
 import code.keyur.mylistdemo.R
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.*
+import java.util.*
 
 
 /**
@@ -25,17 +25,24 @@ import android.view.animation.AnimationUtils
 
 
  */
-class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewHolder>() {
+class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewHolder>(),
+    Filterable {
 
     private val TAG = MyRecyclerViewAdapter::class.java.simpleName
     private val data = mutableListOf<Record>()
+    private val originalData = mutableListOf<Record>()
+    private var searchString = ""
     private var lastPosition = -1
+    private lateinit var onIsLikeButtonTapListener: OnLikeButtonTappedListener
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        val imgThumb = itemView.findViewById<ImageView>(R.id.imgThumb)
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        OnLikeButtonTappedListener {
+        //        val imgThumb = itemView.findViewById<ImageView>(R.id.thumbnail_view)
         val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
-        val txtDesc = itemView.findViewById<TextView>(R.id.txtDesc)
-        val toggleButtonLike = itemView.findViewById<ToggleButton>(R.id.toggleButtonLike)
+        val txtDesc = itemView.findViewById<TextView>(R.id.txtAddress)
+
+        //        val toggleButtonLike = itemView.findViewById<ToggleButton>(R.id.toggleButtonLike)
+        val imageLike = itemView.findViewById<ImageView>(R.id.imageLike)
 
         init {
 
@@ -45,6 +52,8 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
 
             if (data[position].hospitalname?.isNotEmpty() == true) {
                 txtTitle.text = data[position].hospitalname
+//                val display: Display = getWindowManager().getDefaultDisplay()
+//                tryFlowText(data[position].hospitalname, imgThumb, txtTitle, itemView.context.)
             } else {
                 txtTitle.text = "--"
             }
@@ -54,10 +63,21 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
             } else {
                 txtDesc.text = "!!"
             }
+//
+//            toggleButtonLike.setOnCheckedChangeListener { _, isChecked ->
+//                data[position].isLiked = isChecked
+//                Log.d(TAG, "bindView: ${data[position].hospitalname} - ${data[position].isLiked}")
+//                loadIsLikedButton(position)
+//            }
 
-            toggleButtonLike.setOnCheckedChangeListener { _, isChecked ->
-                data[position].isLiked = isChecked
+            imageLike.setOnClickListener {
+                data[position].isLiked = !data[position].isLiked
                 Log.d(TAG, "bindView: ${data[position].hospitalname} - ${data[position].isLiked}")
+                onIsLikeButtonTapListener.onLikeButtonTapped(
+                    data[position],
+                    position,
+                    data[position].isLiked
+                )
                 loadIsLikedButton(position)
             }
 
@@ -65,14 +85,19 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
 
         }
 
+
+        override fun onLikeButtonTapped(record: Record, position: Int, isLiked: Boolean) {
+            onIsLikeButtonTapListener.onLikeButtonTapped(record, position, isLiked)
+        }
+
         private fun loadIsLikedButton(position: Int) {
             if (data[position].isLiked) {
-                toggleButtonLike.background = ResourcesCompat.getDrawable(
+                imageLike.background = ResourcesCompat.getDrawable(
                     itemView.resources,
                     R.drawable.ic_baseline_thumb_up_alt_24,
                     null
                 )
-                toggleButtonLike.backgroundTintList = ColorStateList(
+                imageLike.backgroundTintList = ColorStateList(
                     arrayOf(
                         intArrayOf(
                             android.R.attr.state_selected
@@ -81,12 +106,12 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
                 )
 
             } else {
-                toggleButtonLike.background = ResourcesCompat.getDrawable(
+                imageLike.background = ResourcesCompat.getDrawable(
                     itemView.resources,
                     R.drawable.ic_baseline_thumb_up_alt_24,
                     null
                 )
-                toggleButtonLike.backgroundTintList = ColorStateList(
+                imageLike.backgroundTintList = ColorStateList(
                     arrayOf(
                         intArrayOf(
                             android.R.attr.state_selected
@@ -98,8 +123,16 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
 
     }
 
+    interface OnLikeButtonTappedListener {
+        fun onLikeButtonTapped(record: Record, position: Int, isLiked: Boolean)
+    }
+
+    fun setOnLikeButtonTapListener(onLikeButtonTappedListener: OnLikeButtonTappedListener) {
+        this.onIsLikeButtonTapListener = onLikeButtonTappedListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item4, parent, false)
         return MyViewHolder(view)
     }
 
@@ -113,10 +146,14 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
     }
 
     fun addData(it: List<Record>) {
-        data.clear()
+//        data.clear()
         if (it != null) {
-            data.addAll(it)
-            Log.d(TAG, "addData: $data")
+            if (data.containsAll(it)) {
+                Log.d(TAG, "addData: data already contains new-data: $it")
+            } else {
+                data.addAll(it)
+            }
+            Log.d(TAG, "addData: ${data.size}")
         }
         notifyDataSetChanged()
     }
@@ -142,6 +179,114 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
 
     fun clearAnimation(mRootLayout: View) {
         mRootLayout.clearAnimation()
+    }
+
+    override fun onViewAttachedToWindow(holder: MyViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+//        tryFlowText(
+//            data[holder.adapterPosition].hospitaladdress,
+//            holder.imgThumb,
+//            holder.txtTitle,
+//            holder.itemView.display
+//        )
+        if (searchString.isNotBlank()) {
+            highlightSearchString(holder.txtTitle)
+            highlightSearchString(holder.txtDesc)
+        }
+    }
+
+    override fun getFilter(): Filter {
+        if (originalData.isNullOrEmpty()) {
+            originalData.addAll(data)
+        }
+        Log.d(TAG, "getFilter: original-data: ${originalData.size}")
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val searchWords = constraint.toString()
+                searchString = searchWords
+                val filterResults = FilterResults()
+                return if (searchWords.length > 1) {
+                    val filteredList = originalData.filter { it.toString().lowercase().contains(searchWords) }
+                    Log.d(
+                        TAG,
+                        "performFiltering: filtered-list: for \"$searchWords\"${filteredList.size}"
+                    )
+                    filterResults.values = filteredList
+                    filterResults
+                } else {
+                    Log.d(TAG, "performFiltering: ")
+                    filterResults
+                }
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                // if search-string is blank or empty and results is null or empty, load original data
+                var templist = mutableListOf<Record>()
+                if (constraint.isNullOrBlank()) {
+                    data.clear()
+                    data.addAll(originalData)
+                } else if (results != null && results.values != null) {
+                    templist = results.values as MutableList<Record>
+                    data.clear()
+                    data.addAll(templist)
+                }
+                notifyDataSetChanged()
+                Log.d(
+                    TAG,
+                    "publishResults: search-text: $constraint -- result: -- ${templist.size}"
+                )
+            }
+
+            override fun convertResultToString(resultValue: Any?): CharSequence {
+                return super.convertResultToString(resultValue)
+            }
+
+        }
+    }
+
+    private fun highlightSearchString(textView: TextView) {
+        if (searchString.isNullOrBlank()) {
+            return
+        }
+        if (searchString.length <= 1) {
+            return
+        }
+        var mask = searchString.lowercase(Locale.getDefault())
+        val highlightenabled = true
+        var isHighlighted = false
+        if (highlightenabled) {
+            if (!TextUtils.isEmpty(textView.text)
+                && !TextUtils.isEmpty(mask)
+            ) {
+                val textLC = textView.text.toString().lowercase()
+                mask = mask.lowercase()
+                if (textLC.contains(mask)) {
+                    var ofe = textLC.indexOf(mask, 0)
+                    val wordToSpan: Spannable = SpannableString(textView.text)
+                    var ofs = 0
+                    while (ofs < textLC.length && ofe != -1) {
+                        ofe = textLC.indexOf(mask, ofs)
+                        isHighlighted = if (ofe == -1) {
+                            break
+                        } else {
+                            // set color here
+                            wordToSpan.setSpan(
+                                BackgroundColorSpan(-0x100), ofe, ofe + mask.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            textView.setText(wordToSpan, TextView.BufferType.SPANNABLE)
+                            true
+                        }
+                        ofs = ofe + 1
+                    }
+                }
+            }
+        }
+        if (!isHighlighted) {
+//                txtTitle.text = text
+        }
+
     }
 
 }

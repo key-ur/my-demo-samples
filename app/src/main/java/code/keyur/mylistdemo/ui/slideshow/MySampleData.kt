@@ -1,107 +1,169 @@
 package code.keyur.mylistdemo.ui.slideshow
 
+import androidx.room.*
+import code.keyur.mylistdemo.utils.typeconverters.ListOfFieldTypeConverter
+import code.keyur.mylistdemo.utils.typeconverters.ListOfRecordTypeConverter
+import code.keyur.mylistdemo.utils.typeconverters.ListOfStringTypeConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "MySampleData")
+data class MySampleData(
+    @PrimaryKey(autoGenerate = true)
+    val index:Int,
 
-data class MySampleData (
     @SerializedName("index_name")
     @Expose
-    var indexName: String? = null,
+    var indexName: String = "xx-xxxxkx-xxx",
 
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
-    var title: String? = null,
+    var title: String? = "",
 
+    @ColumnInfo(name = "desc")
     @SerializedName("desc")
     @Expose
-    var desc: String? = null,
+    var desc: String? = "",
 
+    @ColumnInfo(name = "created")
     @SerializedName("created")
     @Expose
-    var created:Long= 0L,
+    var created: Long = 0L,
 
+    @ColumnInfo(name = "updated")
     @SerializedName("updated")
     @Expose
-    var updated:Long = 0L,
+    var updated: Long = 0L,
 
+    @ColumnInfo(name = "created_date")
     @SerializedName("created_date")
     @Expose
-    var createdDate: String? = null,
+    var createdDate: String? = "",
 
+    @ColumnInfo(name = "updated_date")
     @SerializedName("updated_date")
     @Expose
-    var updatedDate: String? = null,
+    var updatedDate: String? = "",
 
+    @ColumnInfo(name = "active")
     @SerializedName("active")
     @Expose
-    var active: String? = null,
+    var active: String? = "",
 
+    @ColumnInfo(name = "visualizable")
     @SerializedName("visualizable")
     @Expose
-    var visualizable: String? = null,
+    var visualizable: String? = "",
 
+    @ColumnInfo(name = "catalog_uuid")
     @SerializedName("catalog_uuid")
     @Expose
-    var catalogUuid: String? = null,
+    var catalogUuid: String? = "",
 
+    @ColumnInfo(name = "source")
     @SerializedName("source")
     @Expose
-    var source: String? = null,
+    var source: String? = "",
 
+    @ColumnInfo(name = "org_type")
     @SerializedName("org_type")
     @Expose
-    var orgType: String? = null,
+    var orgType: String? = "",
 
+    @TypeConverters(ListOfStringTypeConverter::class)
     @SerializedName("org")
     @Expose
-    var org: List<String>? = null,
+    var org: List<String>? = emptyList(),
 
+    @TypeConverters(ListOfStringTypeConverter::class)
     @SerializedName("sector")
     @Expose
-    var sector: List<String>? = null,
+    var sector: List<String>? = emptyList(),
 
+//    @Embedded
+    @TypeConverters(ListOfFieldTypeConverter::class)
     @SerializedName("field")
     @Expose
-    var field: List<Field>? = null,
+    var field: List<Field>? = emptyList(),
 
+    @ColumnInfo(name = "external_ws_url")
     @SerializedName("external_ws_url")
     @Expose
-    var externalWsUrl: String? = null,
+    var externalWsUrl: String? = "",
 
+    @ColumnInfo(name = "external_ws")
     @SerializedName("external_ws")
     @Expose
-    var externalWs: String? = null,
+    var externalWs: String? = "",
 
+    @ColumnInfo(name = "message")
     @SerializedName("message")
     @Expose
-    var message: String? = null,
+    var message: String? = "",
 
+    @ColumnInfo(name = "version")
     @SerializedName("version")
     @Expose
-    var version: String? = null,
+    var version: String? = "",
 
+    @ColumnInfo(name = "status")
     @SerializedName("status")
     @Expose
-    var status: String? = null,
+    var status: String? = "",
 
+    @ColumnInfo(name = "total")
     @SerializedName("total")
     @Expose
-    var total:Int = 0,
+    var total: Int = 0,
 
+    @ColumnInfo(name = "count")
     @SerializedName("count")
     @Expose
-    var count:Int = 0,
+    var count: Int = 0,
 
+    @ColumnInfo(name = "limit")
     @SerializedName("limit")
     @Expose
-    var limit: String? = null,
+    var limit: String? = "",
 
+    @ColumnInfo(name = "offset")
     @SerializedName("offset")
     @Expose
-    var offset: String? = null,
+    var offset: String? = "",
 
+//    @Embedded
+    @TypeConverters(ListOfRecordTypeConverter::class)
+    @ColumnInfo(name = "records")
     @SerializedName("records")
     @Expose
-    var records: List<Record>? = null,
-)
+    var records: List<Record>? = emptyList(),
+) {
+    constructor() : this(0,
+        "",
+        "",
+        "",
+        0L,
+        0L,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+        0,
+        "",
+        "",
+        emptyList()
+    )
+}
