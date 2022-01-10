@@ -91,33 +91,37 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
         }
 
         private fun loadIsLikedButton(position: Int) {
+            Log.d(
+                TAG,
+                "loadIsLikedButton: ${data[position].hospitalname} : ${data[position].isLiked}"
+            )
             if (data[position].isLiked) {
                 imageLike.background = ResourcesCompat.getDrawable(
                     itemView.resources,
                     R.drawable.ic_baseline_thumb_up_alt_24,
                     null
                 )
-                imageLike.backgroundTintList = ColorStateList(
-                    arrayOf(
-                        intArrayOf(
-                            android.R.attr.state_selected
-                        ), intArrayOf()
-                    ), intArrayOf(Color.GREEN, Color.BLUE)
-                )
+//                imageLike.backgroundTintList = ColorStateList(
+//                    arrayOf(
+//                        intArrayOf(
+//                            android.R.attr.state_selected
+//                        ), intArrayOf()
+//                    ), intArrayOf(Color.GREEN, Color.BLUE)
+//                )
 
             } else {
                 imageLike.background = ResourcesCompat.getDrawable(
                     itemView.resources,
-                    R.drawable.ic_baseline_thumb_up_alt_24,
+                    R.drawable.ic_baseline_thumb_up_grey_24,
                     null
                 )
-                imageLike.backgroundTintList = ColorStateList(
-                    arrayOf(
-                        intArrayOf(
-                            android.R.attr.state_selected
-                        ), intArrayOf()
-                    ), intArrayOf(Color.RED, Color.YELLOW)
-                )
+//                imageLike.backgroundTintList = ColorStateList(
+//                    arrayOf(
+//                        intArrayOf(
+//                            android.R.attr.state_selected
+//                        ), intArrayOf()
+//                    ), intArrayOf(Color.RED, Color.YELLOW)
+//                )
             }
         }
 
@@ -132,7 +136,7 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item4, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item, parent, false)
         return MyViewHolder(view)
     }
 
@@ -207,7 +211,8 @@ class MyRecyclerViewAdapter : RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewH
                 searchString = searchWords
                 val filterResults = FilterResults()
                 return if (searchWords.length > 1) {
-                    val filteredList = originalData.filter { it.toString().lowercase().contains(searchWords) }
+                    val filteredList =
+                        originalData.filter { it.toString().lowercase().contains(searchWords) }
                     Log.d(
                         TAG,
                         "performFiltering: filtered-list: for \"$searchWords\"${filteredList.size}"

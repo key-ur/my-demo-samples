@@ -1,83 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
     app:cardCornerRadius="7dp"
-    app:strokeColor="@color/teal_700"
-    app:strokeWidth="0.7px">
+    android:layout_margin="2dp"
+    app:cardBackgroundColor="@color/light_indigo"
+    >
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-        <LinearLayout
-            android:id="@+id/linearButtons"
+        android:layout_margin="4dp"
+        android:elevation="5dp"
+        android:padding="3dp"
+        android:theme="@style/MyCardView">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableBottom="@drawable/ecg_line"
+            android:padding="4dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/dark_indigo"
+            app:layout_constraintEnd_toStartOf="@+id/imageLike"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageLike"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="right"
-            android:background="@color/purple_200"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:minWidth="36dp"
+            android:minHeight="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtTitle" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/teal_200"
-                android:gravity="center"
-                android:padding="4dp">
-
-                <ImageView
-                    android:id="@+id/imageLike"
-                    style="@style/toggleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/ic_toggle_bg" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnMap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Map" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linearAddress"
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignTop="@+id/linearButtons"
-            android:layout_toLeftOf="@+id/linearButtons"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:minWidth="36dp"
+            android:minHeight="36dp"
+            app:layout_constraintBottom_toBottomOf="@+id/txtAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageLike"
+            app:srcCompat="@drawable/ic_baseline_map_24" />
 
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="a;sldfkjaslfkajslfkasjdfl "
-                android:textAppearance="@style/TextAppearance.AppCompat.Menu"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/txtAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="4"
-                android:padding="4dp"
-                android:scrollbars="vertical"
-                android:text="alsfjaslfas flasdkksjdf hsfkjsf slkdfjs fksdjf askdfj sdfkljs dflkasdfj asdflkjsa dflsakdfj lsdkfj jf"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-        </LinearLayout>
-
-
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+            android:textColor="@color/dark_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
